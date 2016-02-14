@@ -1,4 +1,10 @@
 <?php
+/*
+Author: Juluis Terobias
+Version: 1.0
+Platform: php
+Location: UAE
+*/
 require_once('inc/config.php');
 class phpClasses{
 	var $conn;
