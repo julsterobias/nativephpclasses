@@ -65,21 +65,12 @@ class phpClasses{
 		endif;
 		return $data;
 	}
-	function DoCleanStr($str,$datatype){
+	function DoCleanStr($str){
 		$str = htmlspecialchars(filter_var($str,FILTER_SANITIZE_STRING));
 		$str = get_magic_quotes_gpc() ? stripslashes($str):$str;	
 		$str = trim($str);
-		$parchar = NULL;
-		switch($datatype):
-			case '%s':
-				$parchar = "'";
-			break;
-			case '%d':
-				//do nothing
-			break;
-		endswitch;
 		$str = $this->conn->real_escape_string($str);
-		$str = (strlen($str) > 0) ? "$parchar$str$parchar" : 'null';
+		$str = (strlen($str) > 0) ? "$str" : 'null';
 		return $str; 
 	}
 	
@@ -304,6 +295,17 @@ class phpClasses{
 
 		if(count($this->errors) > 0)
 			return @$this->errors[$index];
+	}
+
+	function DoUpload($file,$key,$path){
+		$getext = explode(".",$file['name']);
+		$type = explode("/",$file['type']);
+		$filename = "file".$key.'-'.md5($file['name']).".".$type[1];
+		$res = move_uploaded_file($file["tmp_name"], $path.$filename);
+		if($res)
+			return $path.$filename;
+		else
+			return NULL;
 	}
 		
 }
